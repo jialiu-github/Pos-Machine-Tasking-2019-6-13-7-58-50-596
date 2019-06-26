@@ -1,4 +1,8 @@
 function findGoods(barcodes) {
+    if (barcodes.some(b => !GOOD_REPOSITORY.find(g => g.id === b))){
+        const unexistCode = barcodes.filter(b => !GOOD_REPOSITORY.find(g => g.id === b));
+        throw new Error(`[ERROR]: unexist barcodes ${unexistCode.join(',')}`)
+    }
     return barcodes.map(b => GOOD_REPOSITORY.find(i => i.id === b));
 }
 
@@ -7,9 +11,14 @@ function calculateTotalAmount(goods){
 }
 
 function cashier(barcodes){
-    const goods = findGoods(barcodes);
-    const totalAmount = calculateTotalAmount(goods);
-    return formatToRecipt(goods, totalAmount);
+    try{
+        const goods = findGoods(barcodes);
+        const totalAmount = calculateTotalAmount(goods);
+        return formatToRecipt(goods, totalAmount);
+    }
+    catch(e) {
+        return e.message;
+    }
 }
 
 function formatToRecipt(goods, totalAmount){

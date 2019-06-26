@@ -78,6 +78,13 @@ Price: 16
 
 
 // ## Task 6 should get error when input unexist barcodes
+it('should get error when input unexist barcodes', () => {
+    const barcodes = ['000x'];
+    const receipt = cashier(barcodes);
+
+    expect(receipt).toBe(`[ERROR]: unexist barcodes ${barcodes[0]}`);
+})
+
 
 // ## Task 7 should return 6 when the barcodes has two 0001
 it('should return 6 when the barcode has two 0001', () => {
